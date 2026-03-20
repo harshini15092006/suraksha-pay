@@ -65,14 +65,6 @@ Workers pay a small weekly premium based on AI risk scoring:
 | 🟡 Medium Risk | Hyderabad, Chennai, Ahmedabad | ₹35–₹55 / week |
 | 🔴 High Risk | Mumbai, Delhi, Kolkata | ₹55–₹90 / week |
 
-### Premium Formula
-```
-Weekly Premium = ₹20 (base)
-              + ₹0–15 (rain risk)
-              + ₹0–10 (heat risk)
-              + ₹0–10 (AQI risk)
-              + risk_score × 20 (AI multiplier)
-```
 
 > **Less than the cost of a single meal delivery — for a full week of income protection.**
 
