@@ -171,58 +171,6 @@ Score:     dot(features, weights) → 0.0 to 1.0
 
 ---
 
-## 📁 Project Structure
-
-```
-suraksha-pay/
-├── frontend/                   React + Vite + Tailwind CSS
-│   ├── src/
-│   │   ├── pages/
-│   │   │   ├── LandingPage.jsx     Marketing homepage
-│   │   │   ├── LoginPage.jsx       JWT authentication
-│   │   │   ├── RegisterPage.jsx    2-step registration
-│   │   │   ├── Dashboard.jsx       Main user dashboard
-│   │   │   ├── PolicyPage.jsx      AI policy generator
-│   │   │   ├── ClaimsPage.jsx      Claims history + charts
-│   │   │   └── AdminDashboard.jsx  Admin panel
-│   │   ├── components/
-│   │   │   └── Layout.jsx          Sidebar + navigation
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx     JWT auth state
-│   │   └── utils/
-│   │       └── api.js              Axios instance
-│   ├── index.html
-│   ├── tailwind.config.js
-│   └── vite.config.js
-│
-├── backend/                    Node.js + Express.js
-│   ├── controllers/
-│   │   ├── authController.js       Register + Login
-│   │   ├── policiesController.js   AI risk + premium
-│   │   ├── claimsController.js     Auto-trigger + fraud
-│   │   ├── weatherController.js    Open-Meteo + mock
-│   │   └── adminController.js      Platform stats
-│   ├── models/
-│   │   ├── User.js                 Worker schema
-│   │   ├── Policy.js               Insurance policy
-│   │   ├── Claim.js                Auto-triggered claims
-│   │   └── FraudLog.js             Fraud detection logs
-│   ├── routes/                     REST API routes
-│   ├── middleware/
-│   │   └── auth.js                 JWT protect + adminOnly
-│   └── server.js                   Express app + cron
-│
-├── ai-service/                 Python FastAPI
-│   ├── main.py                     Risk model + safe hours
-│   └── requirements.txt
-│
-└── database/
-    ├── seed.js                     Demo data seeder
-    └── schema.js                   MongoDB schema reference
-```
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -255,17 +203,6 @@ npm run dev
 cd ai-service
 pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
-```
-
-### Environment Variables
-
-Create `backend/.env`:
-```env
-PORT=5000
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/surakshapay
-JWT_SECRET=your_jwt_secret_key
-AI_SERVICE_URL=http://localhost:8000
-NODE_ENV=development
 ```
 
 ### 🌐 Live Demo
