@@ -1,12 +1,18 @@
-# 🛡️ AI-Powered Parametric Insurance for Swiggy Delivery Partners
+# 🛡️ SurakshaPay — AI-Powered Parametric Insurance for Gig Delivery Workers
 
 <div align="center">
 
 ![Insurance](https://img.shields.io/badge/Type-Parametric%20Insurance-orange?style=for-the-badge)
 ![AI](https://img.shields.io/badge/Powered%20By-AI%20%2F%20ML-blue?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Hackathon%20Project-green?style=for-the-badge)
+![Node](https://img.shields.io/badge/Backend-Node.js-green?style=for-the-badge)
+![React](https://img.shields.io/badge/Frontend-React.js-61DAFB?style=for-the-badge)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?style=for-the-badge)
 
 **Automatic income protection for gig delivery workers — no forms, no waiting, no hassle.**
+
+🌐 **Live Demo:** [suraksha-pay.netlify.app](https://suraksha-pay.netlify.app)
+🔧 **Backend API:** [suraksha-pay-backend.onrender.com](https://suraksha-pay-backend.onrender.com/api/health)
 
 </div>
 
@@ -14,26 +20,27 @@
 
 ## 📌 Problem Statement
 
-Swiggy delivery partners lose income every time external conditions make work impossible:
+Swiggy, Zomato & Blinkit delivery partners lose income every time external conditions make work impossible:
 
-- 🌧️ **Heavy Rain** — roads flood, orders stop
+- 🌧️ **Heavy Rain** — roads flood, orders stop, no income
 - 🌡️ **Extreme Heat** — dangerous temperatures force workers indoors
 - 💨 **Toxic Air (AQI)** — pollution makes outdoor work hazardous
 - 🚫 **Government Curfews** — sudden lockdowns with zero notice
 
-> **There is currently no system in India that protects gig workers from income loss due to these external disruptions.**
+> **15 crore gig workers in India have zero income protection. This happens 80–100 days every year.**
 
 ---
 
 ## 💡 Our Solution
 
-An **AI-powered parametric insurance platform** that:
+**SurakshaPay** — An AI-powered parametric insurance platform that:
 
 - ✅ Automatically monitors real-time weather, AQI, and alerts
 - ✅ Triggers instant payouts when conditions cross thresholds
 - ✅ Requires **zero manual claims** from the worker
 - ✅ Uses AI to price premiums fairly based on actual risk
 - ✅ Detects and prevents fraudulent claims automatically
+- ✅ Suggests safe working hours to maximise daily earnings
 
 ---
 
@@ -41,8 +48,8 @@ An **AI-powered parametric insurance platform** that:
 
 | User | Profile |
 |------|---------|
-| Primary | Swiggy delivery partners in urban areas |
-| Cities | Mumbai, Delhi, Bangalore, Hyderabad, Chennai, Kolkata |
+| Primary | Zomato, Swiggy, Blinkit delivery partners |
+| Cities | Mumbai, Delhi, Bangalore, Hyderabad, Chennai, Kolkata + 6 more |
 | Income | ₹500–₹1,000/day average |
 | Pain Point | 80–100 income-lost days per year due to weather |
 
@@ -50,13 +57,22 @@ An **AI-powered parametric insurance platform** that:
 
 ## 💰 Weekly Premium Model
 
-Workers pay a small weekly premium based on their city's risk level:
+Workers pay a small weekly premium based on AI risk scoring:
 
 | Risk Level | Cities | Weekly Premium |
 |-----------|--------|---------------|
-| 🟢 Low Risk | Bangalore, Pune | ₹20 / week |
-| 🟡 Medium Risk | Hyderabad, Chennai, Ahmedabad | ₹30 / week |
-| 🔴 High Risk | Mumbai, Delhi, Kolkata | ₹50 / week |
+| 🟢 Low Risk | Bangalore, Pune, Jaipur | ₹20–₹35 / week |
+| 🟡 Medium Risk | Hyderabad, Chennai, Ahmedabad | ₹35–₹55 / week |
+| 🔴 High Risk | Mumbai, Delhi, Kolkata | ₹55–₹90 / week |
+
+### Premium Formula
+```
+Weekly Premium = ₹20 (base)
+              + ₹0–15 (rain risk)
+              + ₹0–10 (heat risk)
+              + ₹0–10 (AQI risk)
+              + risk_score × 20 (AI multiplier)
+```
 
 > **Less than the cost of a single meal delivery — for a full week of income protection.**
 
@@ -66,12 +82,17 @@ Workers pay a small weekly premium based on their city's risk level:
 
 Payouts fire **automatically** the moment any condition is breached:
 
-| Trigger | Threshold | Auto Payout |
-|---------|-----------|-------------|
-| 🌧️ Rainfall | > 50 mm | Instant |
-| 🌡️ Temperature | > 42°C | Instant |
-| 💨 AQI Index | > 300 | Instant |
-| 🚫 Government Curfew | Announced | Instant |
+| Trigger | Threshold | Hours Covered | Auto Payout |
+|---------|-----------|--------------|-------------|
+| 🌧️ Rainfall | > 10 mm/hr | 4 hours | Instant |
+| 🌡️ Temperature | > 40°C | 3 hours | Instant |
+| 💨 AQI Index | > 200 | 2 hours | Instant |
+
+### Payout Formula
+```
+Payout = Hours Lost × Hourly Income
+Example: 4 hrs × ₹81/hr = ₹325 auto-credited
+```
 
 **No claim form. No phone call. No approval needed.**
 
@@ -80,20 +101,28 @@ Payouts fire **automatically** the moment any condition is breached:
 ## 🤖 AI Integration
 
 ### 1. Risk Zone Prediction
-- Analyses historical weather data for each city
-- Identifies high-risk zones and seasons
-- Adjusts premium pricing dynamically per worker location
+- Analyses live weather data from Open-Meteo API
+- City-specific risk profiles for 12 Indian cities
+- Monsoon season awareness built into scoring
+- Numpy weighted feature vector model
 
 ### 2. Dynamic Premium Pricing
-- Real-time weather feeds inform weekly price
-- Monsoon season = higher premium automatically
-- Fair pricing — workers in safer zones pay less
+```
+Features:  [city_risk, monsoon_season, rainfall, heat, aqi, income]
+Weights:   [  0.35,       0.15,         0.20,   0.15, 0.10,  0.05]
+Score:     dot(features, weights) → 0.0 to 1.0
+```
 
-### 3. Fraud Detection (Anomaly Detection)
-- Flags duplicate claims on the same day
-- Detects GPS location mismatches
-- Identifies unrealistic income or hours claimed
-- Blocks suspicious patterns before payout
+### 3. Safe Working Hours Suggestion
+- Analyses hourly weather forecasts
+- Suggests best hours to maximise earnings
+- Warns about dangerous conditions
+
+### 4. Fraud Detection (4 Automated Checks)
+- 🔍 Duplicate claim detection (same trigger, same day)
+- 📍 GPS location mismatch simulation
+- ⏱️ Unrealistic hours validation (> 12h flagged)
+- 📊 Multiple claims per policy period detection
 
 ---
 
@@ -101,25 +130,25 @@ Payouts fire **automatically** the moment any condition is breached:
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
-│   Register  │────▶│ Select Plan  │────▶│  Pay Premium    │
-│  on Platform│     │ (Risk-Based) │     │  ₹20–₹50/week   │
+│   Register  │────▶│  AI Prices   │────▶│  Pay Premium    │
+│  on Platform│     │  Your Risk   │     │  ₹20–₹90/week   │
 └─────────────┘     └──────────────┘     └────────┬────────┘
                                                    │
                                                    ▼
 ┌─────────────┐     ┌──────────────┐     ┌─────────────────┐
 │   Payout    │◀────│Auto Trigger  │◀────│ System Monitors │
 │  Credited   │     │  Fires       │     │ Weather + AQI   │
-│  Instantly  │     │              │     │   24/7          │
+│  Instantly  │     │  < 5 min     │     │   24/7          │
 └─────────────┘     └──────────────┘     └─────────────────┘
 ```
 
 ### Step-by-Step:
-1. 📝 Worker **registers** on the platform
-2. 🗂️ Selects an **insurance plan** based on city risk
-3. 💳 Pays **weekly premium** (₹20–₹50)
-4. 📡 System **monitors** real-time weather, AQI, and alerts continuously
+1. 📝 Worker **registers** — name, city, platform, daily income
+2. 🤖 **AI calculates** risk score and weekly premium instantly
+3. 💳 Worker **pays premium** (₹20–₹90/week — simulated)
+4. 📡 System **monitors** real-time weather and AQI 24/7
 5. ⚡ If disruption detected → **automatic claim triggered**
-6. ✅ **Payout credited instantly** — worker notified on app
+6. ✅ **Payout credited instantly** — no action needed from worker
 
 ---
 
@@ -127,36 +156,69 @@ Payouts fire **automatically** the moment any condition is breached:
 
 | Layer | Technology |
 |-------|-----------|
-| 🖥️ Frontend | React.js |
-| ⚙️ Backend | Spring Boot (Java) |
-| 🗄️ Database | MySQL |
-| 🌦️ Weather Data | Weather API (real-time) |
-| 🤖 AI / ML | Python (anomaly detection + risk prediction) |
+| 🖥️ Frontend | React.js + Vite + Tailwind CSS |
+| ⚙️ Backend | Node.js + Express.js |
+| 🗄️ Database | MongoDB Atlas (free tier) |
+| 🌦️ Weather API | Open-Meteo API (free, no key needed) |
+| 🤖 AI / ML | Python FastAPI + NumPy |
+| 📊 Charts | Recharts |
+| 🔐 Auth | JWT (JSON Web Tokens) |
+| ⏰ Scheduler | node-cron (parametric triggers) |
+| 🚀 Frontend Host | Netlify |
+| 🔧 Backend Host | Render.com |
+
+> **100% Free Stack — Zero paid services used**
 
 ---
 
 ## 📁 Project Structure
 
 ```
-ai-insurance-swiggy/
-├── frontend/               React.js UI
+suraksha-pay/
+├── frontend/                   React + Vite + Tailwind CSS
 │   ├── src/
-│   │   ├── components/     Reusable UI components
-│   │   ├── pages/          Dashboard, Register, Claims
-│   │   └── utils/          API helpers
+│   │   ├── pages/
+│   │   │   ├── LandingPage.jsx     Marketing homepage
+│   │   │   ├── LoginPage.jsx       JWT authentication
+│   │   │   ├── RegisterPage.jsx    2-step registration
+│   │   │   ├── Dashboard.jsx       Main user dashboard
+│   │   │   ├── PolicyPage.jsx      AI policy generator
+│   │   │   ├── ClaimsPage.jsx      Claims history + charts
+│   │   │   └── AdminDashboard.jsx  Admin panel
+│   │   ├── components/
+│   │   │   └── Layout.jsx          Sidebar + navigation
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx     JWT auth state
+│   │   └── utils/
+│   │       └── api.js              Axios instance
+│   ├── index.html
+│   ├── tailwind.config.js
+│   └── vite.config.js
 │
-├── backend/                Spring Boot API
-│   ├── controllers/        REST endpoints
-│   ├── services/           Business logic
-│   ├── models/             Database entities
-│   └── repositories/       MySQL queries
+├── backend/                    Node.js + Express.js
+│   ├── controllers/
+│   │   ├── authController.js       Register + Login
+│   │   ├── policiesController.js   AI risk + premium
+│   │   ├── claimsController.js     Auto-trigger + fraud
+│   │   ├── weatherController.js    Open-Meteo + mock
+│   │   └── adminController.js      Platform stats
+│   ├── models/
+│   │   ├── User.js                 Worker schema
+│   │   ├── Policy.js               Insurance policy
+│   │   ├── Claim.js                Auto-triggered claims
+│   │   └── FraudLog.js             Fraud detection logs
+│   ├── routes/                     REST API routes
+│   ├── middleware/
+│   │   └── auth.js                 JWT protect + adminOnly
+│   └── server.js                   Express app + cron
 │
-├── ai-service/             Python ML microservice
-│   ├── risk_model.py       Premium pricing model
-│   ├── fraud_detection.py  Anomaly detection
-│   └── weather_trigger.py  Parametric trigger logic
+├── ai-service/                 Python FastAPI
+│   ├── main.py                     Risk model + safe hours
+│   └── requirements.txt
 │
-└── docs/                   Documentation
+└── database/
+    ├── seed.js                     Demo data seeder
+    └── schema.js                   MongoDB schema reference
 ```
 
 ---
@@ -165,68 +227,92 @@ ai-insurance-swiggy/
 
 ### Prerequisites
 - Node.js v18+
-- Java 17+
 - Python 3.9+
-- MySQL 8+
+- MongoDB Atlas account (free)
 
-### Installation
+### Installation & Running
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/ai-insurance-swiggy.git
-cd ai-insurance-swiggy
+git clone https://github.com/harshini15092006/suraksha-pay.git
+cd suraksha-pay
 
-# Frontend
+# Terminal 1 — Backend
+cd backend
+npm install
+npm run dev
+
+# Terminal 2 — Seed demo data (run once)
+cd backend
+node seed.js
+
+# Terminal 3 — Frontend
 cd frontend
 npm install
 npm run dev
 
-# Backend
-cd backend
-./mvnw spring-boot:run
-
-# AI Service
+# Terminal 4 — AI Service (optional)
 cd ai-service
 pip install -r requirements.txt
-python main.py
+uvicorn main:app --reload --port 8000
 ```
 
 ### Environment Variables
 
+Create `backend/.env`:
 ```env
-# Backend
-DB_URL=jdbc:mysql://localhost:3306/insurance_db
-DB_USERNAME=root
-DB_PASSWORD=your_password
-JWT_SECRET=your_jwt_secret
-WEATHER_API_KEY=your_weather_api_key
-
-# AI Service
-WEATHER_API_URL=https://api.open-meteo.com/v1/forecast
-MODEL_PATH=models/risk_model.pkl
+PORT=5000
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/surakshapay
+JWT_SECRET=your_jwt_secret_key
+AI_SERVICE_URL=http://localhost:8000
+NODE_ENV=development
 ```
+
+### 🌐 Live Demo
+
+| Service | URL |
+|---------|-----|
+| 🌐 Frontend | https://suraksha-pay.netlify.app |
+| 🔧 Backend API | https://suraksha-pay-backend.onrender.com/api/health |
+
+### Demo Accounts
+
+| Role | Email | Password |
+|------|-------|----------|
+| 👷 Worker | raju@demo.com | Demo@123 |
+| 👷 Worker | priya@demo.com | Demo@123 |
+| 🛡️ Admin | admin@surakshapay.in | Admin@123 |
 
 ---
 
 ## 📊 Key Features
 
 ### Worker Dashboard
-- 📋 Active policy details
-- 💸 Weekly premium display
-- 📈 Earnings protected so far
-- 🕐 Claim history with timestamps
+- 📋 Active policy with premium breakdown
+- 💸 Total earnings protected
+- 🌤️ Live weather widget for city
+- 🕐 AI-suggested safe working hours
+- 📈 Payout history chart (last 7 days)
+- 🌧️ **Simulate Rain button** — instant demo payout
+
+### Policy Page
+- 🤖 One-click AI policy generation
+- 📊 Premium breakdown (base + risks)
+- 🎯 Risk score visualization
+- ⚠️ Weather warnings for the week
+
+### Claims Page
+- 📋 Full claim history with filters
+- 📊 Bar chart — payouts over time
+- 🥧 Pie chart — claims by trigger type
+- 🚨 Fraud flag indicators
 
 ### Admin Dashboard
-- 👥 Total registered workers
-- ⚡ Claims triggered today
-- 🚨 Fraud alerts panel
-- 🗺️ High-risk zone map
-
-### Real-Time Monitoring
-- Live weather data feeds
-- AQI index tracking
-- Government alert integration
-- Automatic trigger evaluation every 5 minutes
+- 👥 Total users + active policies
+- ⚡ Claims triggered + total payouts
+- 🗺️ High-risk zones ranking
+- 🚨 Fraud alerts with resolve button
+- 📈 7-day claims trend chart
 
 ---
 
@@ -235,12 +321,13 @@ MODEL_PATH=models/risk_model.pkl
 | Feature | Description |
 |---------|-------------|
 | 📱 Mobile App | Native Android/iOS application |
-| 🔗 Swiggy Integration | Direct API integration with Swiggy platform |
+| 🔗 Platform Integration | Direct API with Zomato/Swiggy |
 | 📍 GPS Tracking | Real-time location verification |
 | 🧠 Advanced AI | Deep learning for better risk prediction |
 | 🌍 Pan-India Scale | Expand to 50+ cities |
 | 💳 UPI Integration | Instant UPI payout to worker accounts |
 | 📊 Analytics | City-wise risk heatmaps and trends |
+| 🚫 Curfew Detection | Government alert API integration |
 
 ---
 
@@ -261,5 +348,7 @@ This project is built for hackathon purposes.
 **"When the rain falls — the money arrives."**
 
 ⭐ Star this repo if you found it useful!
+
+🛡️ SurakshaPay — Protecting India's Gig Workers
 
 </div>
